@@ -1,0 +1,57 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: paddle-cluster-job
+spec:
+  parallelism: 3
+  completions: 3
+  template:
+    metadata:
+      name: paddle-cluster-job
+    spec:
+      volumes:
+      - name: efs
+        persistentVolumeClaim:
+          claimName: efsvol
+      containers:
+      - name: trainer
+        image: paddledev/paddle-tutorial:k8s_train
+        command: ["bin/bash",  "-c", "/root/start.sh"]
+        env:
+        - name: JOB_NAME
+          value: paddle-cluster-job
+        - name: JOB_PATH
+          value: /home/jobpath
+        - name: JOB_NAMESPACE
+          value: default
+        - name: TRAIN_CONFIG_DIR
+          value: quick_start
+        - name: CONF_PADDLE_NIC
+          value: eth0
+        - name: CONF_PADDLE_PORT
+          value: "7164"
+        - name: CONF_PADDLE_PORTS_NUM
+          value: "2"
+        - name: CONF_PADDLE_PORTS_NUM_SPARSE
+          value: "2"
+        - name: CONF_PADDLE_GRADIENT_NUM
+          value: "3"
+        - name: TRAINER_COUNT
+          value: "3"
+        volumeMounts:
+        - mountPath: "/home/jobpath"
+          name: efs
+        ports:
+        - name: jobport0
+          hostPort: 7164
+          containerPort: 7164
+        - name: jobport1
+          hostPort: 7165
+          containerPort: 7165
+        - name: jobport2
+          hostPort: 7166
+          containerPort: 7166
+        - name: jobport3
+          hostPort: 7167
+          containerPort: 7167
+      restartPolicy: Never
