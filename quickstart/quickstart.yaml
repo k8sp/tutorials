@@ -10,14 +10,17 @@ spec:
       name: paddle-cluster-job
     spec:
       volumes:
-      - name: efs
+      - name: nfs
         persistentVolumeClaim:
-          claimName: efsvol
+          claimName: nfs
       containers:
       - name: trainer
-        image: paddledev/paddle-tutorial:k8s_train
-        command: ["bin/bash",  "-c", "/root/start.sh"]
+        #image: paddledev/paddle-tutorial:k8s_train
+        image: yq01-idl-gpu-jpaas-let00.yq01.baidu.com:5000/paddle:k8s
+        command: ["/bin/bash", "/root/start.sh"]
         env:
+        - name: SPLIT_COUNT
+          value: "4"
         - name: JOB_NAME
           value: paddle-cluster-job
         - name: JOB_PATH
@@ -40,7 +43,7 @@ spec:
           value: "3"
         volumeMounts:
         - mountPath: "/home/jobpath"
-          name: efs
+          name: nfs
         ports:
         - name: jobport0
           hostPort: 7164

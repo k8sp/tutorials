@@ -60,6 +60,9 @@ def isPodAllRunning(podlist):
     '''
     check all pod is running
     '''
+    if !podlist.has_key("items") || podlist["item"] == None:
+        print "waiting for pods running, got no pod..."
+        return False
     require = len(podlist["items"])
     running = 0
     for pod in podlist["items"]:
@@ -81,6 +84,7 @@ def getPodList():
 
     pod = API + NAMESPACE + "/pods?"
     job = JOBNAME
+    print "fetching pod info, url: ", (apiserver + pod + JOBSELECTOR + job)
     if os.path.isfile(tokenpath):
         tokenfile = open(tokenpath, mode='r')
         token = tokenfile.read()

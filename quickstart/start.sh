@@ -9,12 +9,12 @@ function get_data() {
   echo "using split count ${split_count}"
 
   mkdir -p $out_dir
-  print "Cloning PaddlePaddle master branch..."
+  printf "Cloning PaddlePaddle master branch..."
   git clone -b master https://github.com/PaddlePaddle/Paddle.git paddle
   cp -r paddle/demo/quick_start $out_dir/
   echo "Done."
 
-  print "Downloading demo training data..."
+  printf "Downloading demo training data..."
   mkdir -p $out_dir/0/data
   cd $out_dir/0/data
   wget http://paddlepaddle.bj.bcebos.com/demo/quick_start_preprocessed_data/preprocessed_data.tar.gz
@@ -22,7 +22,7 @@ function get_data() {
   rm preprocessed_data.tar.gz
   echo "Done."
 
-  print "Spliting demo training data..."
+  printf "Spliting demo training data..."
   split -d --number=l/$split_count -a 5 train.txt train.
   mv train.00000 train.txt
 
