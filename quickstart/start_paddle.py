@@ -60,7 +60,7 @@ def isPodAllRunning(podlist):
     '''
     check all pod is running
     '''
-    if !podlist.has_key("items") || podlist["item"] == None:
+    if podlist.has_key("items") and podlist["items"] == None:
         print "waiting for pods running, got no pod..."
         return False
     require = len(podlist["items"])

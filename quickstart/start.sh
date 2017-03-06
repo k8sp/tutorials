@@ -17,6 +17,7 @@ function get_data() {
   printf "Downloading demo training data..."
   mkdir -p $out_dir/0/data
   cd $out_dir/0/data
+  rm -rf *
   wget http://paddlepaddle.bj.bcebos.com/demo/quick_start_preprocessed_data/preprocessed_data.tar.gz
   tar zxvf preprocessed_data.tar.gz
   rm preprocessed_data.tar.gz

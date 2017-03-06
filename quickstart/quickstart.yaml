@@ -15,8 +15,8 @@ spec:
           claimName: nfs
       containers:
       - name: trainer
-        #image: paddledev/paddle-tutorial:k8s_train
-        image: yq01-idl-gpu-jpaas-let00.yq01.baidu.com:5000/paddle:k8s1
+        image: paddledev/paddle-tutorial:k8s_train
+        #image: yq01-idl-gpu-jpaas-let00.yq01.baidu.com:5000/paddle:k8s6
         command: ["/bin/bash", "/root/start.sh"]
         env:
         - name: SPLIT_COUNT
@@ -26,7 +26,7 @@ spec:
         - name: JOB_PATH
           value: /home/jobpath
         - name: JOB_NAMESPACE
-          value: default
+          value: paddle
         - name: TRAIN_CONFIG_DIR
           value: quick_start
         - name: CONF_PADDLE_NIC
