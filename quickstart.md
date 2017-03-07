@@ -8,7 +8,7 @@
 
 你可以访问的Kubernetes集群可以是一个本地的虚拟机测试集群(如[*minikube*](https://kubernetes.io/docs/getting-started-guides/minikube/))，也可以是您在[*AWS*](https://kubernetes.io/docs/getting-started-guides/aws/)上搭建的集群，也可以是您的公司或者学校为您提供的Kubernetes集群。连接到这些集群都需要`kubectl`的命令行客户端、集群的连接地址、账户（密钥）。
 
-1. 获得`kubectl`
+1. 获得`kubectl`，下载完成后将其移动到环境变量`PATH`所在的目录下以方便使用：
 
   ```bash
   # OS X
@@ -59,8 +59,30 @@
 ## 使用Paddle构建一个集群任务
 
 1. 构建运行Paddle任务的docker镜像
+
+  ```bash
+  cd quickstart
+  docker build . -t [yourepo]/paddle:k8s_quickstart
+  # push到共有的dockerhub或私有registry
+  # 可以使Kubernetes各个节点访问到这个镜像
+  docker push [yourepo]/paddle:k8s_quickstart
+  ```
+2. 编辑Kubernetes运行的编排文件，修改`image`指向上一部push的镜像的地址，并根据需要修改环境变量的配置
+
+  ```bash
+  vim quickstart.yaml
+  ```
+3. 提交任务和监控任务状态，如果Pod显示`RUNNING`状态表示正在运行，如果显示`Completed`表示执行成功
+
+  ```bash
+  # 如果没有namespace则创建paddle namespace
+  kubectl create namespace paddle
+  kubectl --namespace=paddle create -f quickstart.yaml
+  # 查看提交的任务
+  kubectl --namespace=paddle get jobs
+  # 查看任务启动的pod
+  kubectl --namespace=paddle get pods -a
+  # 查看任务的某个pod的运行日志
+  kubectl --namespace=paddle logs [PodID]
+  ```
   
-  ```
-  ```
-2. 创建Kubernetes运行的编排文件
-3. 提交任务和监控任务状态
