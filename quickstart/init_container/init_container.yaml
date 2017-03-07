@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: init-container
+spec:
+  template:
+    metadata:
+      name: init-container
+    spec:
+      containers:
+      - name: init-container
+        image: paddledev/paddle-tutorial:k8s_data
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: "/home/jobpath"
+          name: nfs
+        env:
+        - name: JOB_NAME
+          value: paddle-cluster-job
+        - name: JOB_PATH
+          value: /home/jobpath
+        - name: SPLIT_COUNT
+          value: "3"
+      volumes:
+        - name: nfs
+          persistentVolumeClaim:
+            claimName: nfs
+      restartPolicy: Never
