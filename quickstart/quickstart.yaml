@@ -1,13 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: paddle-cluster-job
+  name: paddle-cluster-job-1
 spec:
   parallelism: 3
   completions: 3
   template:
     metadata:
-      name: paddle-cluster-job
+      name: paddle-cluster-job-1
     spec:
       volumes:
       - name: nfs
@@ -15,9 +15,12 @@ spec:
           claimName: nfs
       containers:
       - name: trainer
-        image: paddledev/paddle-tutorial:k8s_train
+        #image: paddledev/paddle-tutorial:k8s_train
+        image: yq01-idl-gpu-jpaas-let00.yq01.baidu.com:5000/paddle:k8s14
         command: ["/bin/bash", "/root/start.sh"]
         env:
+        - name: SPLIT_COUNT
+          value: "3"
         - name: JOB_NAME
           value: paddle-cluster-job
         - name: JOB_PATH

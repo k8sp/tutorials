@@ -5,8 +5,13 @@ function get_data() {
   split_count=$SPLIT_COUNT
   echo "using output dir ${out_dir}"
   echo "using split count ${split_count}"
-
   mkdir -p $out_dir
+
+  if [ -e $out_dir/.Done ]; then
+    echo "Found .Done file, data preparation already finished, skipping..."
+    exit 0
+  fi
+
   printf "Cloning PaddlePaddle master branch..."
   git clone -b master https://github.com/PaddlePaddle/Paddle.git paddle
   cp -r paddle/demo/quick_start $out_dir/
@@ -16,7 +21,7 @@ function get_data() {
   mkdir -p $out_dir/0/data
   cd $out_dir/0/data
   rm -rf *
-  wget http://paddlepaddle.bj.bcebos.com/demo/quick_start_preprocessed_data/preprocessed_data.tar.gz
+  wget -q http://paddlepaddle.bj.bcebos.com/demo/quick_start_preprocessed_data/preprocessed_data.tar.gz
   tar zxvf preprocessed_data.tar.gz
   rm preprocessed_data.tar.gz
   echo "Done."
@@ -32,6 +37,8 @@ function get_data() {
       cp -r 0/data/* $i/data
       mv $i/data/train.`printf %05d $i` $i/data/train.txt
   done;
+  # mark data preparatioin is done
+  touch $out_dir/.Done
   echo "Done."
 }
 

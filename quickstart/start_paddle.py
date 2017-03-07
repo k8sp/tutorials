@@ -63,7 +63,7 @@ def isPodAllRunning(podlist):
     if podlist.has_key("items") and podlist["items"] == None:
         print "waiting for pods running, got no pod..."
         return False
-    require = len(podlist["items"])
+    require = int(os.getenv("TRAINER_COUNT"))
     running = 0
     for pod in podlist["items"]:
         if pod["status"]["phase"] == "Running":
@@ -157,7 +157,6 @@ def startPaddle(idMap={}, train_args_dict=None):
         logDir + "/train.log"
     print startTrainer
     os.system(startTrainer)
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
