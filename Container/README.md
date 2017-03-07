@@ -1,8 +1,10 @@
 # 容器简介
-## 容器和Docker关系
-提到容器，很多人第一反应即为Docker，但实际上容器和Docker还是有一定区别的，简单来说，容器是一种轻量级的虚拟化技术，而Docker则是这种技术的一种对开发者非常友好的工具。
+## 什么是容器
+容器是一种轻量级的虚拟化技术，它在进程级别对CPU、内存、文件系统、网络IO等资源进行隔离。通过容器，用户可以方便的将程序代码、配置以及运行环境进行打包。并且可以很方便的运行在不同的操作系统上运行。
 
 ## 容器发展的主要里程碑
+容器技术的发展历程基本上是从著名的[Chroot](https://en.wikipedia.org/wiki/Chroot)项目开始，经过诸多项目的历练，在2013年，出现了广为人知的[Docker](https://www.docker.com)。
+
 - **1979: Unix V7**
 
   在1979年，Unix V7 引入了一个被称为[Chroot](https://en.wikipedia.org/wiki/Chroot)的系统，并在1982年被添加到BSD中.[Chroot](https://en.wikipedia.org/wiki/Chroot)会在文件系统中创建一个新的目录，作为进程的根目录，这一特性使得不同进程拥有自己的目录权限，实现了文件系统上的隔离。
@@ -43,3 +45,4 @@
 ## 参考文献
 - [A Brief History of Containers: From 1970s chroot to Docker 2016](http://blog.aquasec.com/a-brief-history-of-containers-from-1970s-chroot-to-docker-2016)
 - [Docker docs](https://docs.docker.com)
+- [What are Containers](https://aws.amazon.com/containers/)
