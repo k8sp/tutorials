@@ -57,6 +57,7 @@
   执行以上命令，如果没有报错信息，并有集群基本信息返回则客户端配置成功。此时也可以执行`kubectl version`来查看客户端和服务端的Kubernetes版本。
 
 ## 使用Paddle构建一个集群任务
+任务使用了 https://github.com/PaddlePaddle/Paddle/tree/develop/demo/quick_start 的示例程序trainer_config.lr.py，其使用Amazon公开的对3C类商品的评价文本数据，训练一个简单的神经网络完成对评价情感的预测，推断评价为正面评价还是负面评价
 
 1. 构建运行Paddle任务的docker镜像
 
@@ -85,4 +86,3 @@
   # 查看任务的某个pod的运行日志
   kubectl --namespace=paddle logs [PodID]
   ```
-  
