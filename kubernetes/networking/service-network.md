@@ -8,7 +8,7 @@ Pod的IP是动态分配在**docker0**所在网段的,当发生重启，扩容等
 
 * **ClusterIP**:提供一个集群内部的虚拟IP以供Pod访问。
 * **NodePort**:在每个Node上打开一个端口以供外部访问。
-* **LoadBalancer**:通过外部的负载均衡器来访问。
+* **LoadBalancer**:通过负载均衡器来访问。
 
 ### ClusterIP && NodePort && LoadBalancer
 #### 1. ClusterIP
