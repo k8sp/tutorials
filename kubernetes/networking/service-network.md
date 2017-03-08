@@ -1,7 +1,10 @@
-# Service的网络模型
+# Service网络模型
+
+## Service简述
+### 什么是Service?
+
 在Kubernetes中Servie是一种抽象资源类型，在逻辑上通过[Label selectors](https://kubernetes.io/docs/user-guide/labels/#label-selectors)的机制定义了一组Pod以及对这一组Pod的访问方式。
 
-## 为什么要有Service
 在Kubernetes的Node上，Pod的IP地址是被动态分配在**docker0**所在网段的,当发生重启，扩容等操作时，IP地址会随之变化。当某个Pod(frontend)需要去访问其依赖的另外一组Pod(backend)时，如果backend的IP发生变化时，如何保证fronted到backend的正常通信变的非常重要。为了解决此类问题,Kubernetes设计了Service的概念。
 
 在实际生产环境中，对Service的访问可能会有两种来源：
@@ -14,6 +17,10 @@
 * **NodePort**:在每个Node上打开一个端口以供外部访问。
 * **LoadBalancer**:在某几个node上开放端口，并通过负载均衡器来供外部访问。
 
+## 什么是Endpoint?
+上面讲到每个Service定义了的一组逻辑上的Pod,这些Pod的IP地址被称为endpoint，通常情况下endpoint是通过[label-selectors](https://kubernetes.io/docs/user-guide/labels/#label-selectors))自动选择的，但在一些特殊的场景下，也可以人工制定一组endpoint。
+
+## Service的几种类型
 ### ClusterIP
 
 此模式会提供一个集群内部的虚拟IP（与Pod不在同一网段)，以供集群内部的pod之间通信使用。
@@ -48,7 +55,7 @@ ClusterIP也是Kubernetes service的默认类型。
     ```
     能够看到Kubernetes为名尾nginx-service的Service创建了一个clusterIP,地址为10.0.0.252.
 
-    在本文开头处提到每个Service定义了的一组逻辑上的Pod,他们的IP地址称为**endpoint**,通过`get endpoint`命令能够看到这一组endpoint的IP地址,分别对应了nginx的三个Pod的IP。
+    通过`get endpoint`命令能够看到这一组endpoint的IP地址,分别对应了nginx的三个Pod的IP。
     ```bash
     yancey@ yancey-macbook kubernetes-1$kubectl get endpoint
     NAME            ENDPOINTS                                AGE

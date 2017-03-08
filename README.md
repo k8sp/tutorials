@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# tutorials
-=======
 # Kubernetes实战教程
 
 * 一个运行Paddle Job的例子
@@ -64,4 +61,3 @@
    * AI开发平台
       * ServerLess服务
       * 大数据和AI
->>>>>>> 9b4d60bfd4a264633cc3edaaa8b26df9827e3a83
