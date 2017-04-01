@@ -13,13 +13,18 @@ spec:
       - name: nfs
         persistentVolumeClaim:
           claimName: nfs
+      - name: cuda-libs
+        hostPath:
+          path: /home/wuyi/myhostpath/lib64
       containers:
       - name: trainer
-        image: paddledev/paddle-tutorial:k8s_train
+#        image: paddledev/paddle-tutorial:k8s_train
+        image: docker.paddlepaddle.org/paddle_dist_train:0.9.0-gpu
         imagePullPolicy: Always
         securityContext:
           privileged: true
         command: ["/bin/bash", "/root/start.sh"]
+        #command: ["sleep", "3600"]
         resources:
           requests:
             cpu: 500m
@@ -27,6 +32,7 @@ spec:
           limits:
             cpu: 2
             memory: 5Gi
+            alpha.kubernetes.io/nvidia-gpu: 2
         env:
         - name: SPLIT_COUNT
           value: "3"
@@ -53,9 +59,13 @@ spec:
           value: "3"
         - name: TRAINER_COUNT
           value: "3"
+        - name: LD_LIBRARY_PATH
+          value: "/usr/lib64:/usr/local/lib:/usr/local/lib64"
         volumeMounts:
         - mountPath: "/home/jobpath"
           name: nfs
+        - mountPath: "/usr/lib64"
+          name: cuda-libs
         ports:
         - name: jobport0
           hostPort: 7164
