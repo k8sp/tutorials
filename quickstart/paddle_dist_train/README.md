@@ -23,35 +23,25 @@
   - JOB_NAME 为每个集群训练的名字
   - SPLIT_COUNT 根据需要将数据切分为多份
 
-1. 基于PaddlePaddle生产环境镜像构建PaddlePaddle分布式训练
+1. 构建运行PaddlePaddle任务的docker镜像
   - 本文中使用quick_start做为样例程序，你可以修改Dockerfile，打包自己的Docker Image并push到Docker Registry
   ```bash
-  docker build -t paddlepaddle/paddle_k8s:quick_start .
-  docker push paddlepaddle/paddle_k8s:quick_start
-  ```
-
-1. 构建运行Paddle任务的docker镜像
-
-  ```bash
-  cd quickstart
-  docker build . -t [yourepo]/paddle:k8s_quickstart
+  docker build -t [yourepo]/paddle_k8s_quickstart .
   # push到共有的dockerhub或私有registry
   # 可以使Kubernetes各个节点访问到这个镜像
-  docker push [yourepo]/paddle:k8s_quickstart
+  docker push [yourepo]/paddle_k8s_quickstart
   ```
+
 2. 编辑Kubernetes运行的编排文件，修改`image`指向上一部push的镜像的地址，并根据需要修改环境变量的配置，主要修改以下几个配置
   - img: 上一步中的镜像地址
   - TRAINER_PACKAGE_PATH: 程序包所在目录
   - JOB_NAME: 需要保证job名字唯一，否则会提交失败
   - JOB_PATH: 训练数据所在的文件夹
-  ```bash
-  vim quickstart.yaml
-  ```
+
 3. 提交任务和监控任务状态，如果Pod显示`RUNNING`状态表示正在运行，如果显示`Completed`表示执行成功
 
   ```bash
   # 如果没有namespace则创建paddle namespace
-  kubectl create namespace paddle
   kubectl --namespace=paddle create -f quickstart.yaml
   # 查看提交的任务
   kubectl --namespace=paddle get jobs

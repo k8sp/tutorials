@@ -163,8 +163,8 @@ if __name__ == '__main__':
     train_args_dict = dict(zip(train_args[:-1:2], train_args[1::2]))
     podlist = getPodList()
     # need to wait until all pods are running
-    while not isPodAllRunning(podlist):
-        time.sleep(20)
-        podlist = getPodList()
+    #while not isPodAllRunning(podlist):
+    #    time.sleep(20)
+    #    podlist = getPodList()
     idMap = getIdMap(podlist)
     startPaddle(idMap, train_args_dict)

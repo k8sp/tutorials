@@ -17,8 +17,7 @@ spec:
       containers:
       - name: trainer
         image: yancey1989/paddle_k8s_quickstart
-        #command: ["/bin/bash", "/root/start.sh"]
-        command: ["sleep", "3600"]
+        command: ["/bin/bash", "/root/start.sh"]
         resources:
           requests:
             cpu: 500m
