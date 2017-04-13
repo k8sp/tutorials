@@ -16,14 +16,10 @@ spec:
           path: gfs_vol
       containers:
       - name: trainer
-<<<<<<< HEAD
         image: yancey1989/paddle_k8s_quickstart
-=======
-        image: paddledev/paddle-tutorial:k8s_train
         imagePullPolicy: Always
         securityContext:
           privileged: true
->>>>>>> ab58a9d321980e2d4acc457b235b3e111cf17c7a
         command: ["/bin/bash", "/root/start.sh"]
         resources:
           requests:
