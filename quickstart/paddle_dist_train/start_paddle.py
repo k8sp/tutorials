@@ -31,7 +31,7 @@ PADDLE_PORT = os.getenv("CONF_PADDLE_PORT")
 PADDLE_PORTS_NUM = os.getenv("CONF_PADDLE_PORTS_NUM")
 PADDLE_PORTS_NUM_SPARSE = os.getenv("CONF_PADDLE_PORTS_NUM_SPARSE")
 PADDLE_SERVER_NUM = os.getenv("CONF_PADDLE_GRADIENT_NUM")
-
+TRAINER_ID = os.getenv("TRAINER_ID")
 tokenpath = '/var/run/secrets/kubernetes.io/serviceaccount/token'
 
 
@@ -54,25 +54,6 @@ def refine_unknown_args(cmd_args):
         else:
             new_args.append(arg)
     return new_args
-
-
-def isPodAllRunning(podlist):
-    '''
-    check all pod is running
-    '''
-    if podlist.has_key("items") and podlist["items"] == None:
-        print "waiting for pods running, got no pod..."
-        return False
-    require = int(os.getenv("TRAINER_COUNT"))
-    running = 0
-    for pod in podlist["items"]:
-        if pod["status"]["phase"] == "Running":
-            running += 1
-    print "waiting for pods running, require:", require, "running:", running
-    if require == running:
-        return True
-    return False
-
 
 def getPodList():
     '''
@@ -139,7 +120,7 @@ def startPaddle(idMap={}, train_args_dict=None):
     if not os.path.exists(logDir):
         os.mkdir(logDir)
     copyCommand = 'cp -rf ' + JOB_PATH + \
-        "/" + str(trainerId) + "/data/*" + " ./data/"
+        "/" + TRAINER_ID + "/data/*" + " ./data/"
     os.system(copyCommand)
     startPserver = 'nohup paddle pserver' + \
         " --port=" + str(PADDLE_PORT) + \
@@ -165,9 +146,5 @@ if __name__ == '__main__':
     train_args = refine_unknown_args(train_args_list)
     train_args_dict = dict(zip(train_args[:-1:2], train_args[1::2]))
     podlist = getPodList()
-    # need to wait until all pods are running
-    while not isPodAllRunning(podlist):
-        time.sleep(20)
-        podlist = getPodList()
     idMap = getIdMap(podlist)
     startPaddle(idMap, train_args_dict)

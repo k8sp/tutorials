@@ -10,12 +10,13 @@ spec:
       name: paddle-cluster-job
     spec:
       volumes:
-      - name: nfs
-        persistentVolumeClaim:
-          claimName: nfs
+      - name: glusterfsvol
+        glusterfs:
+          endpoints: glusterfs-cluster
+          path: gfs_vol
       containers:
       - name: trainer
-        image: paddledev/paddle-tutorial:k8s_train
+        image: yancey1989/paddle_k8s_quickstart
         imagePullPolicy: Always
         securityContext:
           privileged: true
@@ -33,14 +34,16 @@ spec:
         - name: JOB_NAME
           value: paddle-cluster-job
         - name: JOB_PATH
-          value: /home/jobpath
+          value: /mnt/glusterfs/yanxu05/
+        - name: PYTHONHOME
+          value: /usr/local
         # using downward API to reference pod namespace
         - name: JOB_NAMESPACE
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        - name: TRAIN_CONFIG_DIR
-          value: quick_start
+        - name: TRAINER_PACKAGE
+          value: /root/quick_start
         - name: CONF_PADDLE_NIC
           value: eth0
         - name: CONF_PADDLE_PORT
@@ -54,8 +57,8 @@ spec:
         - name: TRAINER_COUNT
           value: "3"
         volumeMounts:
-        - mountPath: "/home/jobpath"
-          name: nfs
+        - mountPath: /mnt/glusterfs
+          name: glusterfsvol
         ports:
         - name: jobport0
           hostPort: 7164
