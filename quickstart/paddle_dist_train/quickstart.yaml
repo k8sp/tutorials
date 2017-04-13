@@ -32,6 +32,8 @@ spec:
           value: paddle-cluster-job
         - name: JOB_PATH
           value: /mnt/glusterfs/yanxu05/
+        - name: PYTHONHOME
+          value: /usr/local
         # using downward API to reference pod namespace
         - name: JOB_NAMESPACE
           valueFrom:

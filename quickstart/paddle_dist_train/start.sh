@@ -2,7 +2,7 @@
 
 function start_train() {
   jobconfig=$TRAINER_PACKAGE_PATH
-
+  cd $jobconfig
   python /root/start_paddle.py \
     --dot_period=10 \
     --ports_num=$CONF_PADDLE_PORTS_NUM \
@@ -15,3 +15,5 @@ function start_train() {
     --config=trainer_config.lr.py \
     --use_gpu=0
 }
+
+start_train

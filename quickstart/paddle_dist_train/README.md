@@ -39,8 +39,11 @@
   # 可以使Kubernetes各个节点访问到这个镜像
   docker push [yourepo]/paddle:k8s_quickstart
   ```
-2. 编辑Kubernetes运行的编排文件，修改`image`指向上一部push的镜像的地址，并根据需要修改环境变量的配置
-
+2. 编辑Kubernetes运行的编排文件，修改`image`指向上一部push的镜像的地址，并根据需要修改环境变量的配置，主要修改以下几个配置
+  - img: 上一步中的镜像地址
+  - TRAINER_PACKAGE_PATH: 程序包所在目录
+  - JOB_NAME: 需要保证job名字唯一，否则会提交失败
+  - JOB_PATH: 训练数据所在的文件夹
   ```bash
   vim quickstart.yaml
   ```

@@ -139,7 +139,7 @@ def startPaddle(idMap={}, train_args_dict=None):
     if not os.path.exists(logDir):
         os.mkdir(logDir)
     copyCommand = 'cp -rf ' + JOB_PATH + \
-        "/" + str(trainerId) + "/data/*" + " ./data/"
+        "/" + str(trainerId) + "/data/" + " ./data/"
     os.system(copyCommand)
     startPserver = 'nohup paddle pserver' + \
         " --port=" + str(PADDLE_PORT) + \
