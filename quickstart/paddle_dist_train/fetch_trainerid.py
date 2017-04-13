@@ -39,7 +39,7 @@ while not isPodAllRunning(podlist):
     podlist = getPodList()
 
 ips = []
-for pod in pod_list["items"]:
+for pod in podlist["items"]:
     ips.append(pod["status"]["podIP"])
 ips.sort()
 idMap = {}
