@@ -17,7 +17,8 @@ spec:
       containers:
       - name: trainer
         image: yancey1989/paddle_k8s_quickstart
-        command: ["/bin/bash", "/root/start.sh"]
+        #command: ["/bin/bash", "/root/start.sh"]
+        command: ["sleep", "3600"]
         resources:
           requests:
             cpu: 500m
@@ -39,7 +40,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        - name: TRAINER_PACKAGE_PATH
+        - name: TRAINER_PACKAGE
           value: /root/quick_start
         - name: CONF_PADDLE_NIC
           value: eth0

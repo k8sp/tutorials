@@ -31,7 +31,7 @@ PADDLE_PORT = os.getenv("CONF_PADDLE_PORT")
 PADDLE_PORTS_NUM = os.getenv("CONF_PADDLE_PORTS_NUM")
 PADDLE_PORTS_NUM_SPARSE = os.getenv("CONF_PADDLE_PORTS_NUM_SPARSE")
 PADDLE_SERVER_NUM = os.getenv("CONF_PADDLE_GRADIENT_NUM")
-
+TRAINER_ID = os.getenv("TRAINER_ID")
 tokenpath = '/var/run/secrets/kubernetes.io/serviceaccount/token'
 
 
@@ -138,9 +138,6 @@ def startPaddle(idMap={}, train_args_dict=None):
         os.makedirs(JOB_PATH_OUTPUT)
     if not os.path.exists(logDir):
         os.mkdir(logDir)
-    copyCommand = 'cp -rf ' + JOB_PATH + \
-        "/" + str(trainerId) + "/data/" + " ./data/"
-    os.system(copyCommand)
     startPserver = 'nohup paddle pserver' + \
         " --port=" + str(PADDLE_PORT) + \
         " --ports_num=" + str(PADDLE_PORTS_NUM) + \

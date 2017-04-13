@@ -15,8 +15,9 @@
 # limitations under the License.
 
 from paddle.trainer_config_helpers import *
-
-dict_file = get_config_arg('dict_file', str, "./data/dict.txt")
+import os
+dict_file = get_config_arg('dict_file', str, \
+    os.path.join(os.getenv("INPUT_PATH", "."), "/data/dict.txt"))
 word_dict = dict()
 with open(dict_file, 'r') as f:
     for i, line in enumerate(f):
@@ -24,8 +25,11 @@ with open(dict_file, 'r') as f:
         word_dict[w] = i
 
 is_predict = get_config_arg('is_predict', bool, False)
-trn = 'data/train.list' if not is_predict else None
-tst = 'data/test.list' if not is_predict else 'data/pred.list'
+trn = os.path.join(os.getenv("INPUT_PATH", "."),'/data/train.list') \
+    if not is_predict else None
+tst = os.path.join(os.getenv("INPUT_PATH", "."),'/data/test.list') \
+    if not is_predict else os.path.join(os.getenv("INPUT_PATH", "."),\
+    '/data/pred.list')
 process = 'process' if not is_predict else 'process_predict'
 
 # define the data sources for the model.
