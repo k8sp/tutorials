@@ -1,6 +1,4 @@
-FROM paddledev/paddle:cpu-latest
-
-RUN sed 's@http:\/\/archive.ubuntu.com\/ubuntu\/@mirror:\/\/mirrors.ubuntu.com\/mirrors.txt@' -i /etc/apt/sources.list && \
-apt-get update && apt-get -y install wget
-ADD start.sh start_paddle.py get_data.sh /root/
+FROM paddlepaddle/paddle:0.10.0rc2
+ADD start.sh start.sh start_paddle.py /root/
+ADD quick_start /root/quick_start
 CMD ["bash","/root/start.sh"]

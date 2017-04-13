@@ -1,9 +1,7 @@
 #!/bin/bash
 
 function start_train() {
-  jobconfig=${JOB_PATH}"/"${JOB_NAME}"/"${TRAIN_CONFIG_DIR}
-  cd /root
-  cp -rf $jobconfig/* .
+  jobconfig=$TRAINER_PACKAGE_PATH
 
   python /root/start_paddle.py \
     --dot_period=10 \
@@ -17,26 +15,3 @@ function start_train() {
     --config=trainer_config.lr.py \
     --use_gpu=0
 }
-
-function lock_or_done() {
-  # IMPORTANT: Only one pod should do the data download job.
-  out_dir=${JOB_PATH}"/"${JOB_NAME}
-  mkdir -p $out_dir # mkdir is safe when doing mult-processes
-  while [ true ]
-  do
-    echo "trying to get lock..."
-    flock -x -w 5 $out_dir/.Filelock bash /root/get_data.sh
-    if [ $? -eq 0 ]; then
-      # Finished
-      break
-    else
-      echo "waiting lock..."
-      sleep 5
-    fi
-  done
-  # ----------------- start train job -----------------
-  start_train
-  # ---------------- finish train job -----------------
-}
-
-lock_or_done

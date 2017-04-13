@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function get_data() {
-  out_dir=${JOB_PATH}"/"${JOB_NAME}
+  out_dir=${DATA_PATH}/${JOB_NAME}
   split_count=$SPLIT_COUNT
   echo "using output dir ${out_dir}"
   echo "using split count ${split_count}"
@@ -11,11 +11,6 @@ function get_data() {
     echo "Found .Done file, data preparation already finished, skipping..."
     exit 0
   fi
-
-  printf "Cloning PaddlePaddle master branch..."
-  git clone -b master https://github.com/PaddlePaddle/Paddle.git paddle
-  cp -r paddle/demo/quick_start $out_dir/
-  echo "Done."
 
   printf "Downloading demo training data..."
   mkdir -p $out_dir/0/data
@@ -33,6 +28,7 @@ function get_data() {
   cd $out_dir
   end=$(expr $split_count - 1)
   for i in $(seq 1 $end); do
+      echo $PWD
       mkdir -p $i/data
       cp -r 0/data/* $i/data
       mv $i/data/train.`printf %05d $i` $i/data/train.txt
