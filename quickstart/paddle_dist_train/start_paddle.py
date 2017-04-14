@@ -119,6 +119,8 @@ def startPaddle(idMap={}, train_args_dict=None):
         os.makedirs(JOB_PATH_OUTPUT)
     if not os.path.exists(logDir):
         os.mkdir(logDir)
+    if not os.path.exists("./data"):
+        os.mkdir("./data")
     copyCommand = 'cp -rf ' + JOB_PATH + \
         "/" + TRAINER_ID + "/data/*" + " ./data/"
     os.system(copyCommand)
