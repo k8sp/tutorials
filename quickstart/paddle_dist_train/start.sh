@@ -17,7 +17,7 @@ function start_train() {
     --saving_period=1 \
     --local=0 \
     --config=trainer_config.lr.py \
-    --use_gpu=1
+    --use_gpu=0
 }
 
 start_train
