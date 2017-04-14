@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: iperfbox1
+spec:
+  containers:
+  - name: iperfbox1
+    image: networkstatic/iperf3
+    command:
+      - sleep
+      - "3600"
+  nodeSelector:
+      workern: "1"
