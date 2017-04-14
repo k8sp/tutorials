@@ -21,6 +21,7 @@ spec:
         securityContext:
           privileged: true
         command: ["/bin/bash", "/root/start.sh"]
+        #command: ["sleep", "3600"]
         resources:
           requests:
             cpu: 500m
