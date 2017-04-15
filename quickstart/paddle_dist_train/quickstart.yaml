@@ -21,13 +21,12 @@ spec:
         securityContext:
           privileged: true
         command: ["/bin/bash", "/root/start.sh"]
-        #command: ["sleep", "3600"]
         resources:
           requests:
-            cpu: 500m
+            cpu: 4
             memory: 1Gi
           limits:
-            cpu: 2
+            cpu: 5
             memory: 5Gi
         env:
         - name: SPLIT_COUNT
@@ -62,15 +61,11 @@ spec:
           name: glusterfsvol
         ports:
         - name: jobport0
-          hostPort: 7164
           containerPort: 7164
         - name: jobport1
-          hostPort: 7165
           containerPort: 7165
         - name: jobport2
-          hostPort: 7166
           containerPort: 7166
         - name: jobport3
-          hostPort: 7167
           containerPort: 7167
       restartPolicy: Never
