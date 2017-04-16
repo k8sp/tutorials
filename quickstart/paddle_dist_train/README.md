@@ -21,9 +21,7 @@
   如果集群没有提供私有的Docker registry，可以使用Docker官方提供的[Docker Hub](https://hub.docker.com)来存储镜像，使用之前需要注册账号,并通过`docker login <username>`命令执行登录操作。
 
 ## 使用PaddlePaddle Docker镜像构建一个集群任务
-任务使用了 https://github.com/PaddlePaddle/Paddle/tree/develop/demo/quick_start 的示例程序trainer_config.lr.py，其使用Amazon公开的对3C类商品的评价文本数据，训练一个简单的神经网络完成对评价情感的预测，推断评价为正面评价还是负面评价
-
-0. 准备训练数据
+1. 准备训练数据
 
   在挂载了GlusterFS Volume的服务器上执行以下命令:
   ```bash
@@ -55,7 +53,6 @@
   ./gluster-paddle-job/0/data
     ...
   ```
-
 1. 构建运行PaddlePaddle任务的docker镜像
   - 本文中使用quick_start做为样例程序，你可以修改Dockerfile，打包自己的Docker Image并push到Docker Registry
   ```bash
@@ -64,8 +61,7 @@
   # 可以使Kubernetes各个节点访问到这个镜像
   docker push [yourepo]/paddle_k8s_quickstart
   ```
-
-2. 修改[job.yaml.template](./job.yaml.template),根据需求修改以下变量:
+1. 修改[job.yaml.template](./job.yaml.template),根据需求修改以下变量:
   - JOB_NAME: 集群训练Job的名字，需要保证唯一性，否则无法正确提交
   - TRAINER_PACKAGE: 程序包所在的目录，注意这里是Docker Image里的目录
   - TRAINER_COUNT: 并发执行的trainer进程数量
@@ -74,8 +70,7 @@
   - TRAINER_PACKAGE: Docker Image中程序包的路径，这会在上一步的Dockerfile指定,例如[这里](./Dockerfile#L3)
 
   [quickstart.yaml](./quickstart.yaml)是提交quickstart分布式训练任务的一个样例
-
-3. 提交任务和监控任务状态，如果Pod显示`RUNNING`状态表示正在运行，如果显示`Completed`表示执行成功
+1. 提交任务和监控任务状态，如果Pod显示`RUNNING`状态表示正在运行，如果显示`Completed`表示执行成功
 
   ```bash
   # 提交任务
