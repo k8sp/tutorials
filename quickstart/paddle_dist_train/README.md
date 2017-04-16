@@ -21,8 +21,7 @@
   如果集群没有提供私有的Docker registry，可以使用Docker官方提供的[Docker Hub](https://hub.docker.com)来存储镜像，使用之前需要注册账号,并通过`docker login <username>`命令执行登录操作。
 
 ## 使用PaddlePaddle Docker镜像构建一个集群任务
-1. 准备训练数据
-
+- 准备训练数据
   在挂载了GlusterFS Volume的服务器上执行以下命令:
   ```bash
   cd <GlusterFS Mount Path>
@@ -31,12 +30,12 @@
   - DATA_PATH 管理员为你分配的在GlusterFS Volume上的目录
   - JOB_NAME 本次集群训练的名字，需要保证在运行的job名字唯一
   - TRAINER_COUNT trainer进程数量
-
   Example:
   ```bash
   $ cd /mnt/gfs_vol/xxx
   $ DATA_PATH=$PWD JOB_NAME=gluster-paddle-job TRAINER_COUNT=3 ./get_data.sh
   ```
+
   执行成功后的目录结构大概为：
   ```bash
   .
@@ -53,7 +52,7 @@
   ./gluster-paddle-job/0/data
     ...
   ```
-1. 构建运行PaddlePaddle任务的docker镜像
+- 构建运行PaddlePaddle任务的docker镜像
   - 本文中使用quick_start做为样例程序，你可以修改Dockerfile，打包自己的Docker Image并push到Docker Registry
   ```bash
   docker build -t [yourepo]/paddle_k8s_quickstart .
@@ -61,16 +60,16 @@
   # 可以使Kubernetes各个节点访问到这个镜像
   docker push [yourepo]/paddle_k8s_quickstart
   ```
-1. 修改[job.yaml.template](./job.yaml.template),根据需求修改以下变量:
+- 修改[job.yaml.template](./job.yaml.template),根据需求修改以下变量:
   - JOB_NAME: 集群训练Job的名字，需要保证唯一性，否则无法正确提交
-  - TRAINER_PACKAGE: 程序包所在的目录，注意这里是Docker Image里的目录
-  - TRAINER_COUNT: 并发执行的trainer进程数量
   - GLUSTERFS_VOLUME: 管理员创建的GlusterFS上的Volume
-  - TRAINER_IMAGE: 上一步中打包并push的Docker Image
+  - USER_PATH: 由于同一个GluterFS Volme可能会被多个人同时使用，所以通过这个指定一个自己使用的路径,例如`/mnt/glusterfs/user0`,需要将`<USER_PATH>`修改为`user0`
   - TRAINER_PACKAGE: Docker Image中程序包的路径，这会在上一步的Dockerfile指定,例如[这里](./Dockerfile#L3)
+  - TRAINER_COUNT: 并发执行的trainer进程数量
+  - TRAINER_IMAGE: 上一步中打包并push的Docker Image
 
   [quickstart.yaml](./quickstart.yaml)是提交quickstart分布式训练任务的一个样例
-1. 提交任务和监控任务状态，如果Pod显示`RUNNING`状态表示正在运行，如果显示`Completed`表示执行成功
+- 提交任务和监控任务状态，如果Pod显示`RUNNING`状态表示正在运行，如果显示`Completed`表示执行成功
 
   ```bash
   # 提交任务

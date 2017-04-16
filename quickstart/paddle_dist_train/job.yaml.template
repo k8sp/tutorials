@@ -32,7 +32,7 @@ spec:
         - name: JOB_NAME
           value: <JOB_NAME>
         - name: JOB_PATH
-          value: <JOB_PATH>
+          value: /mnt/glusterfs/<USER_PATH>
         - name: PYTHONHOME
           value: /usr/local
         # using downward API to reference pod namespace
