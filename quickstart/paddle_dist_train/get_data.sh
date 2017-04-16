@@ -2,9 +2,8 @@
 
 function get_data() {
   out_dir=${DATA_PATH}/${JOB_NAME}
-  split_count=$SPLIT_COUNT
   echo "using output dir ${out_dir}"
-  echo "using split count ${split_count}"
+  echo "using split count ${TRAINER_COUNT}"
   mkdir -p $out_dir
 
   if [ -e $out_dir/.Done ]; then
@@ -22,11 +21,11 @@ function get_data() {
   echo "Done."
 
   printf "Spliting demo training data..."
-  split -d --number=l/$split_count -a 5 train.txt train.
+  split -d --number=l/$TRAINER_COUNT -a 5 train.txt train.
   mv train.00000 train.txt
 
   cd $out_dir
-  end=$(expr $split_count - 1)
+  end=$(expr $TRAINER_COUNT - 1)
   for i in $(seq 1 $end); do
       echo $PWD
       mkdir -p $i/data
