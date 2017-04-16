@@ -60,15 +60,16 @@
   # 可以使Kubernetes各个节点访问到这个镜像
   docker push [yourepo]/paddle_k8s_quickstart
   ```
-- 修改[job.yaml.template](./job.yaml.template),根据需求修改以下变量:
+- 修改[job.yaml.template](./job.yaml.template)文件,根据需要覆盖以下变量的值:
   - JOB_NAME: 集群训练Job的名字，需要保证唯一性，否则无法正确提交
   - GLUSTERFS_VOLUME: 管理员创建的GlusterFS上的Volume
-  - USER_PATH: 由于同一个GluterFS Volme可能会被多个人同时使用，所以通过这个指定一个自己使用的路径,例如`/mnt/glusterfs/user0`,需要将`<USER_PATH>`修改为`user0`
-  - TRAINER_PACKAGE: Docker Image中程序包的路径，这会在上一步的Dockerfile指定,例如[这里](./Dockerfile#L3)
+  - USER_PATH: 由于同一个GluterFS Volme可能会被多个人同时使用，所以通过这个指定一个自己使用的路径,例如`/mnt/glusterfs/user0`,需要将`<USER_PATH>`修改为`user0`.
+  - TRAINER_PACKAGE: Docker Image中程序包的路径，这会在上一步的Dockerfile指定,例如[这里](./Dockerfile#L3),路径是`/root/quick_start`.
   - TRAINER_COUNT: 并发执行的trainer进程数量
   - TRAINER_IMAGE: 上一步中打包并push的Docker Image
 
-  [quickstart.yaml](./quickstart.yaml)是提交quickstart分布式训练任务的一个样例
+  [quickstart.yaml](./quickstart.yaml)是提交quick_start分布式训练任务的一个样例配置.
+
 - 提交任务和监控任务状态，如果Pod显示`RUNNING`状态表示正在运行，如果显示`Completed`表示执行成功
 
   ```bash
