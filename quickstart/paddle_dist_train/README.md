@@ -70,7 +70,7 @@
   - `.spec.parallelism` 并发执行的Pod数量，通常和trainer进程数保持一致即可
   - `.spec.template.spec.volumes[0].gluterfs.path` 由管理员分配给您在GlusterFS的Volume
   - `.spec.template.spec.containers[0].image` 上一步中打包并push的Docker Image
-  - `.spec.template.spec.containers[0].env` Pod执行时加载的环境变量
+  - `.spec.template.spec.containers[0].env` Pod启动时加载的环境变量
     - `JOB_NAME` 集群训练的Job名字，和`metadata.name`保持一致即可
     - `JOB_PATH` Pod Mount的GlusterFS Volume路径，由于同一个Volume可能会被多个人同时使用，所以这个路径通常是一个属于自己的路径，例如Mount到Pod的路径是`/mnt/glusterfs`，您使用的路径可以是`/mnt/glusterfs/user0`。
     - `TRAINER_PACKAGE` Docker Image中程序包的路径，这会在上一步的Dockerfile指定,例如[这里](./Dockerfile#L3),路径是`/root/quick_start`.
