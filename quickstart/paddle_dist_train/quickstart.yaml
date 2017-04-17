@@ -29,8 +29,6 @@ spec:
             cpu: 5
             memory: 5Gi
         env:
-        - name: SPLIT_COUNT
-          value: "3"
         - name: JOB_NAME
           value: paddle-cluster-job
         - name: JOB_PATH
