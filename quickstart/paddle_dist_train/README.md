@@ -16,9 +16,7 @@
 
 - 安装Docker
 
-  根据不同的操作系统安装Docker，[Mac](https://docs.docker.com/docker-for-mac/install/), [Linux](https://docs.docker.com/engine/installation/linux/ubuntu/), [Windows](https://docs.docker.com/docker-for-windows/install/)
-
-  如果集群没有提供私有的Docker registry，可以使用Docker官方提供的[Docker Hub](https://hub.docker.com)来存储镜像，使用之前需要注册账号,并通过`docker login <username>`命令执行登录操作。
+  根据[这篇文档]在本地安装Docker。如果集群没有提供私有的Docker registry，可以使用Docker官方提供的[Docker Hub](https://hub.docker.com)来存储镜像，您需要先注册账号,并通过`docker login <username>`命令执行登录，以便后续上传镜像使用。
 
 ## 使用PaddlePaddle Docker镜像构建一个集群任务
 - 准备训练数据
@@ -30,6 +28,9 @@
   - DATA_PATH 管理员为你分配的在GlusterFS Volume上的目录
   - JOB_NAME 本次集群训练的名字，需要保证在运行的job名字唯一
   - TRAINER_COUNT trainer进程数量
+
+  **注意**:由于每个trainer进程读取一个数据片，所以trainer进程数量要和数据分片个数保持一致。
+
   Example:
   ```bash
   $ cd /mnt/gfs_vol/xxx
@@ -53,22 +54,27 @@
     ...
   ```
 - 构建运行PaddlePaddle任务的docker镜像
-  - 本文中使用quick_start做为样例程序，你可以修改Dockerfile，打包自己的Docker Image并push到Docker Registry
+
+  本文中使用quick_start做为样例程序，您可以修改Dockerfile，打包自己的Docker Image并push到Docker Registry
   ```bash
   docker build -t [yourepo]/paddle_k8s_quickstart .
   # push到共有的dockerhub或私有registry
   # 可以使Kubernetes各个节点访问到这个镜像
   docker push [yourepo]/paddle_k8s_quickstart
   ```
-- 修改[job.yaml.template](./job.yaml.template)文件,根据需要覆盖以下变量的值:
-  - JOB_NAME: 集群训练Job的名字，需要保证唯一性，否则无法正确提交
-  - GLUSTERFS_VOLUME: 管理员创建的GlusterFS上的Volume
-  - USER_PATH: 由于同一个GluterFS Volme可能会被多个人同时使用，所以通过这个指定一个自己使用的路径,例如`/mnt/glusterfs/user0`,需要将`<USER_PATH>`修改为`user0`.
-  - TRAINER_PACKAGE: Docker Image中程序包的路径，这会在上一步的Dockerfile指定,例如[这里](./Dockerfile#L3),路径是`/root/quick_start`.
-  - TRAINER_COUNT: 并发执行的trainer进程数量
-  - TRAINER_IMAGE: 上一步中打包并push的Docker Image
+- [quickstart.yaml](./quickstart.yaml)是提交quick_start分布式训练任务的一个样例配置.
 
-  [quickstart.yaml](./quickstart.yaml)是提交quick_start分布式训练任务的一个样例配置.
+  需要经常修改的参数说明：
+  - `.metadata.name` 集群训练的Job名字，同一个namespace下不可以出现重名的情况
+  - `.spec.template.metadata.name` 和 `metadata.name` 保持一致即可
+  - `.spec.parallelism` 并发执行的Pod数量，通常和trainer进程数保持一致即可
+  - `.spec.template.spec.volumes[0].gluterfs.path` 由管理员分配给您在GlusterFS的Volume
+  - `.spec.template.spec.containers[0].image` 上一步中打包并push的Docker Image
+  - `.spec.template.spec.containers[0].env` Pod执行时加载的环境变量
+    - `JOB_NAME` 集群训练的Job名字，和`metadata.name`保持一致即可
+    - `JOB_PATH` Pod Mount的GlusterFS Volume路径，由于同一个Volume可能会被多个人同时使用，所以这个路径通常是一个属于自己的路径，例如Mount到Pod的路径是`/mnt/glusterfs`，您使用的路径可以是`/mnt/glusterfs/user0`。
+    - `TRAINER_PACKAGE` Docker Image中程序包的路径，这会在上一步的Dockerfile指定,例如[这里](./Dockerfile#L3),路径是`/root/quick_start`.
+    - `TRAINER_COUNT` trainer进程数量
 
 - 提交任务和监控任务状态，如果Pod显示`RUNNING`状态表示正在运行，如果显示`Completed`表示执行成功
 
