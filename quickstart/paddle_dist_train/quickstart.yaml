@@ -4,7 +4,6 @@ metadata:
   name: paddle-cluster-job
 spec:
   parallelism: 3
-  completions: 3
   template:
     metadata:
       name: paddle-cluster-job
@@ -29,8 +28,6 @@ spec:
             cpu: 5
             memory: 5Gi
         env:
-        - name: SPLIT_COUNT
-          value: "3"
         - name: JOB_NAME
           value: paddle-cluster-job
         - name: JOB_PATH
