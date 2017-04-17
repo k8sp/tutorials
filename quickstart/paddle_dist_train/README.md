@@ -33,7 +33,7 @@
   Example:
   ```bash
   $ cd /mnt/gfs_vol/xxx
-  $ DATA_PATH=$PWD JOB_NAME=gluster-paddle-job TRAINER_COUNT=3 ./get_data.sh
+  $ DATA_PATH=$PWD JOB_NAME=paddle-cluster-job TRAINER_COUNT=3 ./get_data.sh
   ```
 
   执行成功后的目录结构大概为：
