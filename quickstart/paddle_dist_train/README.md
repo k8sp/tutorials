@@ -16,7 +16,7 @@
 
 - 安装Docker
 
-  根据[这篇文档]在本地安装Docker。如果集群没有提供私有的Docker registry，可以使用Docker官方提供的[Docker Hub](https://hub.docker.com)来存储镜像，您需要先注册账号,并通过`docker login <username>`命令执行登录，以便后续上传镜像使用。
+  根据[这篇文档](../../container/README.md)在本地安装Docker。如果集群没有提供私有的Docker registry，可以使用Docker官方提供的[Docker Hub](https://hub.docker.com)来存储镜像，您需要先注册账号,并通过`docker login <username>`命令执行登录，以便后续上传镜像使用。
 
 ## 使用PaddlePaddle Docker镜像构建一个集群任务
 - 准备训练数据
