@@ -13,11 +13,11 @@ function start_train() {
     --ports_num_for_sparse=$CONF_PADDLE_PORTS_NUM_SPARSE \
     --log_period=50 \
     --num_passes=10 \
-    --trainer_count=$TRAINER_COUNT \
+    --trainer_count=$TRAINER_THREAD \
     --saving_period=1 \
     --local=0 \
     --config=trainer_config.lr.py \
-    --use_gpu=0
+    --use_gpu=${USE_GPU:-0}
 }
 
 start_train
