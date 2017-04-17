@@ -1,4 +1,4 @@
 FROM paddlepaddle/paddle:0.10.0rc2
-ADD start.sh start_paddle.py get_data.sh fetch_trainerid.py /root/
+ADD start.sh start_paddle.py fetch_trainerid.py /root/
 ADD ./quick_start /root/quick_start
 CMD ["bash","/root/start.sh"]

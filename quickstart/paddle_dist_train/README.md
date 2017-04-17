@@ -62,9 +62,11 @@
   # 可以使Kubernetes各个节点访问到这个镜像
   docker push [yourepo]/paddle_k8s_quickstart
   ```
-- [quickstart.yaml](./quickstart.yaml)是提交quick_start分布式训练任务的一个样例配置.
+- 提交集群训练任务，支持CPU和GPU两个版本
+  - [quickstart.yaml](./quickstart.yaml)是提交CPU版本quick_start分布式训练任务的配置样例。
+  - [quickstart_gpu.yaml](./quickstart_gpu.yaml)是提交GPU版本quick_start分布式训练任务的配置样例。
 
-  需要经常修改的参数说明：
+  其中需要修改的参数如下说明：
   - `.metadata.name` 集群训练的Job名字，同一个namespace下不可以出现重名的情况
   - `.spec.template.metadata.name` 和 `metadata.name` 保持一致即可
   - `.spec.parallelism` 并发执行的Pod数量，通常和trainer进程数保持一致即可
@@ -74,7 +76,12 @@
     - `JOB_NAME` 集群训练的Job名字，和`metadata.name`保持一致即可
     - `JOB_PATH` Pod Mount的GlusterFS Volume路径，由于同一个Volume可能会被多个人同时使用，所以这个路径通常是一个属于自己的路径，例如Mount到Pod的路径是`/mnt/glusterfs`，您使用的路径可以是`/mnt/glusterfs/user0`。
     - `TRAINER_PACKAGE` Docker Image中程序包的路径，这会在上一步的Dockerfile指定,例如[这里](./Dockerfile#L3),路径是`/root/quick_start`.
-    - `TRAINER_COUNT` trainer进程数量
+    - `TRAINER_COUNT` trainer进程数量,对应Kubernetes中实际启动的Pod数量
+    - `USE_GPU` 是否使用GPU训练，`0`表示不使用GPU，`1`表示使用GPU
+    - `TRAINER_THREAD` trainer线程的数量，每个线程对应一块GPU卡
+  - `.spec.template.spec.containers[0].resources.limits.alpha.kubernetes.io/nvidia-gpu` 表示一个trainer进程同时使用几块GPU卡，这个参数要和环境变量`TRAINER_THREAD`一致
+
+  更详细的参数说明在[这里](https://kubernetes.io/docs/concepts/jobs/run-to-completion-finite-workloads/)
 
 - 提交任务和监控任务状态，如果Pod显示`RUNNING`状态表示正在运行，如果显示`Completed`表示执行成功
 
