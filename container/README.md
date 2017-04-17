@@ -76,9 +76,9 @@ CMD ["bash","/root/start.sh"]
 - `ADD`两行将当前目录的一些脚本文件添加到要制作的Docker镜像中。这样在制作的镜像中就会包含这些文件
 - `CMD`定义镜像默认的启动命令
 
-执行下面的命令开始编译Docker镜像。其中`-t cluster_train`指定编译这个镜像的路径(cluster_train)和TAG(1.0)。最后的`.`表示编译上下文为当前路径。
+执行下面的命令开始编译Docker镜像。其中`-t cluster_train`指定编译这个镜像的路径([path]/cluster_train)和TAG(1.0)。最后的`.`表示编译上下文为当前路径。
 ```
-docker build -t cluster_train:1.0 .
+docker build -t [path]/cluster_train:1.0 .
 ```
 
 ## 容器与虚拟机的对比
