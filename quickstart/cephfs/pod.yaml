@@ -18,4 +18,3 @@ spec:
       user: admin
       secretRef:
         name: ceph-secret
-      readOnly: true
