@@ -113,6 +113,6 @@ core@localhost ~ $ etcdctl ls /coreos.com
 systemctl list-dependencies docker
 ```
 
-检查了依赖docker.service的其他units：左边是899的，右边是1010的。可以看出，在899里docker不依赖flanneld，但是在1010里，docker依赖flanneld。
+检查了依赖docker.service的其他units：右边是899的，左边是1010的。可以看出，在899里docker不依赖flanneld，但是在1010里，docker依赖flanneld。
 
 <img width=600 src=unit-deps-899-vs-1010.png />
