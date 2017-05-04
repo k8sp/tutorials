@@ -5,7 +5,7 @@
 ## 配置Kubectl
 
 1. 配置不带TLS认证的kubectl
-将一下内容保存在本机`~/.kube/config`文件中，并按步骤修改文件：
+将以下内容保存在本机`~/.kube/config`文件中，并按步骤修改文件：
   ```yaml
   apiVersion: v1
   clusters:
